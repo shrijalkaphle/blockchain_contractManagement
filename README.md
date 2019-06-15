@@ -2,6 +2,15 @@
  
  
  
+ DEPENDENCIES:
+
+1. NPM: https://nodejs.org
+2. Truffle: https://github.com/trufflesuite/truffle
+3. Ganache: http://truffleframework.com/ganache/
+4. Metamask: https://metamask.io/
+ 
+ 
+ 
  STEPS TO RUN:
  
  1. Clone the project
@@ -15,12 +24,3 @@
  5. Run the DAPP <br>
         <b>npm run dev</b>  Visit this URL in your browser: http://localhost:3000
  
- 
- 
-
-DEPENDENCIES:
-
-1. NPM: https://nodejs.org
-2. Truffle: https://github.com/trufflesuite/truffle
-3. Ganache: http://truffleframework.com/ganache/
-4. Metamask: https://metamask.io/
