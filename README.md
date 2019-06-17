@@ -29,3 +29,18 @@ SCREENSHOT:
 
 1. Connect to MetaMask
 <img src="screenshot/connectingMetaMask.png" />
+
+2. Landing Page
+<img src="screenshot/index.png" />
+
+3. Creating User
+<img src="screenshot/createUser.png" />
+
+3. Creating Contract
+<img src="screenshot/createContract.png" />
+
+4. Viewing Contract
+<img src="screenshot/viewContract.png" />
+
+5. Viewing User
+<img src="screenshot/viewUser.png" />
