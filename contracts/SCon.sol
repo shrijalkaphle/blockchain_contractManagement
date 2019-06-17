@@ -1,107 +1,100 @@
 pragma solidity ^0.5.0;
-pragma experimental ABIEncoderV2;
+//pragma experimental ABIEncoderV2;
 
 contract SCon {
     struct scon {
         uint id;
-        string title;
-        string owner;
-        string client;
-        string description;
-        string period;
-        string contractValue;
-        string status;
-        string date;
+        bytes32 title;
+        bytes32 owner;
+        bytes32 client;
+        bytes32 description;
+        bytes32 endDate;
+        bytes32 contractValue;
+        bytes32 status;
     }
 
     struct inserting {
-        string title;
-        string owner;
-        string client;
-        string description;
-        string period;
-        string contractValue;
-        string status;
-        string date;
+        bytes32 title;
+        bytes32 owner;
+        bytes32 client;
+        bytes32 description;
+        bytes32 endDate;
+        bytes32 contractValue;
+        bytes32 status;
     }
+
+    mapping(uint=>inserting) public insert;
 
     mapping(uint=>scon) public scons;
 
     uint public sconCount;
+    uint public insertCount;
 
-    event votedEvent (
-        uint indexed _candidateId
+    event contractEvent (
+        uint indexed _contractID
     );
 
     function createSCon (inserting memory contracts) private {
         sconCount++;
-        string memory title = contracts.title;
-        string memory owner = contracts.owner;
-        string memory client = contracts.client;
-        string memory desc = contracts.description;
-        string memory period = contracts.period;
-        string memory value = contracts.contractValue;
-        string memory status = contracts.status;
-        string memory date = '';
+        bytes32 title = contracts.title;
+        bytes32 owner = contracts.owner;
+        bytes32 client = contracts.client;
+        bytes32 desc = contracts.description;
+        bytes32 endDate = contracts.endDate;
+        bytes32 value = contracts.contractValue;
+        bytes32 status = contracts.status;
+        //uint date = contracts.date;
 
-        scons[sconCount] = scon(sconCount, title, owner, client, desc, period, value, status,date);
+        scons[sconCount] = scon(sconCount, title, owner, client, desc, endDate, value, status);
     }
 
-    function createStruct
-    (string[] memory array) public {
+    function createStruct (bytes32[] memory value) public {
         inserting memory con;
-
-        con.title = array[0];
-        con.owner = array[1];
-        con.client = array[2];
-        con.period = array[3];
-        con.contractValue = array[4];
-        con.description = array[5];
-        con.date = array[6];
-        con.status = 'pending';
+        con.title = value[0];
+        con.owner = value[1];
+        con.client = value[2];
+        con.endDate = value[4];
+        // con.contractValue = value[5];
+        // con.description = value[3];
+        con.status = 'Pending';
 
         createSCon(con);
     }
 
     constructor() public {
         inserting memory con;
-        inserting memory con2;
 
-        con.title = '1';
-        con.owner = 'Shrijal Kaphle';
-        con.client = '1';
-        con.period = 1;
-        con.contractValue = 1;
-        con.description = '1';
-        con.status = 'pending';
-
-        con2.title = '1';
-        con2.client = 'Shrijal Kaphle';
-        con2.owner = '1';
-        con2.period = 1;
-        con2.contractValue = 1;
-        con2.description = '1';
-        con2.status = 'pending';
+        con.title = bytes32('Sample');
+        con.owner = bytes32('Shrijal Kaphle');
+        con.client = bytes32('Roshan Chapaghain');
+        con.endDate = bytes32('2020/1/1');
+        con.contractValue = bytes32('70000');
+        con.description = bytes32('This is Sample Contract');
+        con.status = bytes32('Pending');
 
         createSCon(con);
-        createSCon(con2);
     }
 
     function remove(uint addr) public {
         delete(scons[addr]);
     }
 
-    function reject(uint addr) public {
-        scons[addr].status = 'Rejected';
+    function reject(uint _contractID) public {
+        scons[_contractID].status = bytes32('Rejected');
+        //emit contractEvent(_contractID);
     }
 
-    function accept(uint addr) public {
-        scons[addr].status = 'Ongoing';
+    function accept(uint _contractID) public {
+        scons[_contractID].status = bytes32('Ongoing');
+        //emit contractEvent(_contractID);
     }
 
-    function checkStatus(string memory date) public {
-        for(uint i = 1;i <= sconCount; i++) {
-            scons[i].date = date;
-        }
-    }
+    // function checkStatus(uint today) public {
+    //     for(uint i = 1;i <= sconCount; i++) {
+    //         uint date = scons[i].endDate;
+    //         if (date > today) {
+    //             scons[i].status = 'Terminated';
+    //         }
+    //     }
+    // }
 }

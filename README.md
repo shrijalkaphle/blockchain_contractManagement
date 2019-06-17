@@ -23,4 +23,6 @@
  6. Configure MetaMask
  5. Run the DAPP <br>
         <b>npm run dev</b>  Visit this URL in your browser: http://localhost:3000
- 
+
+
+SCREENSHOT: 

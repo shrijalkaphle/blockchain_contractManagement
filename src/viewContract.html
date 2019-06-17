@@ -53,6 +53,7 @@
       </div><!-- /.container-fluid -->
     </nav>
     <div class="container">
+        <h3>Contract By Me</h3>
       <table class="table table-striped">
         <thead>
           <td scope="col">Contract ID</td>
@@ -62,8 +63,8 @@
           <td scope="col">Description</td>
           <td scope="col">Status</td>
           <td scope="col">Value</td>
-          <td scope="col">Period</td>
-          <td scope="col"></td>
+          <td scope="col">End Date</td>
+          <td scope="col">Delete</td>
         </thead>
         <tbody id="sconResults"></tbody>
       </table>
@@ -82,13 +83,31 @@
             <td scope="col">Description</td>
             <td scope="col">Status</td>
             <td scope="col">Value</td>
-            <td scope="col">Period</td>
-            <td scope="col"></td>
-            <td scope="col"></td>
+            <td scope="col">End Date</td>
+            <td scope="col">Accept</td>
+            <td scope="col">Reject</td>
           </thead>
           <tbody id="conToAccept"></tbody>
         </table>
     </div>
+
+    <div class="container">
+        <br><br><br>
+        <h3>Other Contract</h3>
+        <table class="table table-striped" id="example">
+            <thead>
+              <td scope="col">Contract ID</td>
+              <td scope="col">Title</td>
+              <td scope="col">Owner</td>
+              <td scope="col">Client</td>
+              <td scope="col">Description</td>
+              <td scope="col">Status</td>
+              <td scope="col">Value</td>
+              <td scope="col">End Date</td>
+            </thead>
+            <tbody id="otherContract"></tbody>
+          </table>
+      </div>
   </body>
 </html>
 

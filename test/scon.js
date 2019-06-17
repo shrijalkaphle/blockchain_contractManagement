@@ -1,9 +1,9 @@
-var User = artifacts.require("./User.sol");
+var SCon = artifacts.require("./SCon.sol");
 
-contract("User", function(accounts){
-    it("two user", function() {
-        return User.deployed().then(function(instance) {
-            return instance.userCount();
+contract("Scon", function(accounts){
+    it("two contract", function() {
+        return SCon.deployed().then(function(instance) {
+            return instance.sconCount();
         }).then(function(count) {
             assert.equal(count,2);
         });

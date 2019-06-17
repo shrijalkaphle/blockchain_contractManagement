@@ -59,7 +59,7 @@ App = {
       // Restart Chrome if you are unable to receive this event
       // This is a known issue with Metamask
       // https://github.com/MetaMask/metamask-extension/issues/2393
-      instance.votedEvent({}, {
+      instance.contractEvent({}, {
         fromBlock: 0,
         toBlock: 'latest'
       }).watch(function(error, event) {
@@ -96,6 +96,9 @@ App = {
       var sconOwner = $('#sconOwner');
       sconOwner.empty();
 
+      var startDate = $('#startDate');
+      startDate.empty();
+
       var adminView = $('#adminView');
       adminView.empty();
 
@@ -121,11 +124,22 @@ App = {
 
             var ownerTemplate = "<input type='text' class='form-control' id='owner' value='"+ name +"' name='owner' disabled>";
             sconOwner.append(ownerTemplate);
+
+            var date = new Date();
+            var dd = String(date.getDate());
+            var mm = String(date.getMonth()+1);
+            var yyyy = date.getFullYear();
+            date = yyyy +"/"+ mm +"/"+ dd;
+
+            var dateTemplate = "<input type='text' class='form-control' id='owner' value='"+ date +"' name='owner' disabled>";
+            startDate.append(dateTemplate);
           }
 
         })
       }
     })
+
+
     // Load contract data
     App.contracts.SCon.deployed().then(function(instance) {
       sconInstance = instance;
@@ -137,6 +151,9 @@ App = {
       var conToAccept = $('#conToAccept');
       conToAccept.empty();
 
+      var otherContract = $('#otherContract');
+      otherContract.empty();
+
       for (var i = 1; i <= sconCount; i++) {
         sconInstance.scons(i).then(function(scon) {
           var id = scon[0];
@@ -144,37 +161,64 @@ App = {
           var owner = scon[2];
           var client = scon[3];
           var desc = scon[4];
-          var period = scon[5];
+          var date = scon[5];
           var val = scon[6];
           var status = scon[7];
-          // var edit = "<form onSubmit  = 'App.deleteSCon(); return false;'>"
-          // var edit  = edit + "<input type='text' id='title' value='1' name='title' hidden>"
-          // var edit = edit + "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>"
-          // var edit = edit + "</form>"
+
+          var str1 = hex_to_ascii(title);
+          var str2 = hex_to_ascii(owner);
+          var str3 = hex_to_ascii(client);
+          var str4 = hex_to_ascii(desc);
+          var str5 = hex_to_ascii(date);
+          var str6 = hex_to_ascii(val);
+          var str7 = hex_to_ascii(status);
+          
+          var contractDate = new Date();
+          var dd = String(contractDate.getDate());
+          var mm = String(contractDate.getMonth()+1);
+          var yyyy = contractDate.getFullYear();
+          contractDate = yyyy + mm + dd;
+          contractDate = parseInt(contractDate);
+          contractDate = parseInt(contractDate);
+
+          if(date < contractDate) {
+            App.contracts.SCon.deployed().then(function(instance) {
+              sconInstance = instance;
+              return sconInstance.checkStatus(contractDate);
+            })
+          }
 
           // Render contract created
-          if(owner == user) {
-            var edit = "<form onSubmit  = 'App.deleteSCon(); return false;'>"
-            var edit  = edit + "<input type='text' id='title' value='1' name='title' hidden>"
+          if(!str2.localeCompare(user)) {
+            var edit = "<form onSubmit  = 'App.deleteSCon("+id+"); return false;'>"
             var edit = edit + "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>"
             var edit = edit + "</form>"
 
-            var sconTemplate = "<tr><th>" + id + "</th><td>"+ title + "</td><td>" + owner + "</td><td>" + client + "</td><td>" + desc + "</td><td>" + status + "</td><td>" + val + "</td><td>" + period + "</td><td>"+edit+"</td></tr>"
+            var sconTemplate = "<tr><th>" + id + "</th><td>"+ str1 + "</td><td>" + str2 + "</td><td>" + str3 + "</td><td>" + str4 + "</td><td>" + str7 + "</td><td>" + str6 + "</td><td>" + str5 + "</td><td>"+edit+"</td></tr>"
             sconResults.append(sconTemplate);
           }
 
-          if(client == user) {
-            var accpt = "<form class='form-inline' onSubmit  = 'App.acceptSCon(); return false;'>"
-            var accpt  = accpt + "<input type='text' id='title' value='1' name='title' hidden>"
-            var accpt = accpt + "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-ok' aria-hidden='true'></span></button>"
-            var accpt = accpt + "</form>"
-            var rej = "<form class='form-inline' onSubmit  = 'App.rejectSCon(); return false;'>"
-            var rej  = rej + "<input type='text' id='title' value='1' name='title' hidden>"
-            var rej = rej + "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>"
-            var rej = rej + "</form>"
+          var stat = 'Pending';
 
-            var conTemplate = "<tr><th>" + id + "</th><td>"+ title + "</td><td>" + owner + "</td><td>" + client + "</td><td>" + desc + "</td><td>" + status + "</td><td>" + val + "</td><td>" + period + "</td><td>"+ accpt + "</td><td>"+ rej +"</td></tr>"
-            conToAccept.append(conTemplate);
+          if(!str3.localeCompare(user) ) {
+            if(!str7.localeCompare(stat)) {
+              var accpt = "<form onSubmit  = 'App.acceptSCon("+id+"); return false;'>"
+              var accpt = accpt + "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-ok' aria-hidden='true'></span></button>"
+              var accpt = accpt + "</form>"
+
+              var rej = "<form onSubmit  = 'App.rejectSCon("+id+"); return false;'>"
+              var rej = rej + "<button type='submit' id='reject"+id+"' class='btn btn-default'> <span class='glyphicon glyphicon-remove' aria-hidden='true'></span></button>"
+              var rej = rej + "</form>"
+            
+              var conTemplate = "<tr><th>" + id + "</th><td>"+ str1 + "</td><td>" + str2 + "</td><td>" + str3 + "</td><td>" + str4 + "</td><td>" + str7 + "</td><td>" + str6 + "</td><td>" + str5 + "</td>"
+              conTemplate = conTemplate + "<td><div id='accept'>"+ accpt + "</div></td><td><div id='reject1'>"+ rej +"</div></td></tr>"
+              conToAccept.append(conTemplate);
+            } else {
+              //alert('here')
+              var otherTemplate = "<tr><th>" + id + "</th><td>"+ str1 + "</td><td>" + str2 + "</td><td>" + str3 + "</td><td>" + str4 + "</td><td>" + str7 + "</td><td>" + str6 + "</td><td>" + str5 + "</td></tr>"
+              otherContract.append(otherTemplate);
+            }
+            
           }
         });
       }
@@ -203,6 +247,7 @@ App = {
       }
 
     })
+
   },
 
   createUser: function() {
@@ -218,37 +263,37 @@ App = {
     document.getElementById("userForm").reset();
   },
 
-  deleteSCon: function() {
-    var addr = $('#title').val();
-    
+  deleteSCon: function(addr) {
+    //var addr = $('#removeID').val();
+    //alert(addr);
     App.contracts.SCon.deployed().then(function(instance) {
       return instance.remove(addr);
-      //return instance.createSCon(array);
     }).catch(function(err) {
       console.error(err);
     })
+    location.reload();
   },
 
-  rejectSCon: function() {
-    var addr = $('#title').val();
-    
+  rejectSCon: function(addr) {
+    //var addr = $('#rejID').val();
+    //alert(addr);
     App.contracts.SCon.deployed().then(function(instance) {
       return instance.reject(addr);
-      //return instance.createSCon(array);
     }).catch(function(err) {
       console.error(err);
     })
+    location.reload();
   },
 
-  acceptSCon: function() {
-    var addr = $('#title').val();
-    
+  acceptSCon: function(addr) {
+    //var addr = $('#accptID').val();
+    //alert(addr);
     App.contracts.SCon.deployed().then(function(instance) {
       return instance.accept(addr);
-      //return instance.createSCon(array);
     }).catch(function(err) {
       console.error(err);
     })
+    location.reload();
   },
 
   createSCon: function() {
@@ -261,16 +306,18 @@ App = {
     var client = $('#client').val();
     var desc = $('#desc').val();
     var period = $('#period').val();
-    var add = parseInt(period) + 1;
+    var add = parseInt(period) + 1
     var val = $('#value').val();
 
-    var today = new Date();
-    var dd = String(today.getDate());
-    var mm = String(today.getMonth()+add);
-    var yyyy = today.getFullYear();
+    var endDate = new Date();
+    var dd = String(endDate.getDate());
+    var mm = String(endDate.getMonth()+add);
+    var yyyy = endDate.getFullYear();
+    endDate = yyyy + "/" + mm + "/" + dd;
+    endDate = endDate.toString();
 
-    today = yyyy + mm + dd;
-
+    var array = [title,owner,client,desc,endDate,val];
+    //alert(endDate);
     App.contracts.User.deployed().then(function(instance) {
       userInstance = instance;
       return userInstance.userCount();
@@ -278,7 +325,6 @@ App = {
       for(var i = 1;i <= userCount; i++) {
         userInstance.users(i).then(function(usr){
           var name = usr[1];
-          //alert(client);
           if(client == name) {
             flag = 0;
           } else {
@@ -286,26 +332,16 @@ App = {
           }
         })
       }
-      if (flag == 1) {
+      if (flag != 0) {
         alert('no such user');
-        location.replace('index.html');
       } else {
         App.contracts.SCon.deployed().then(function(instance) {
-          return instance.createStruct(title,client,desc,period,val);
-          //return instance.createSCon(array);
+         // return instance.createStruct(array);
         }).catch(function(err) {
           console.error(err);
         })
       }
-
     })
-    
-    // App.contracts.SCon.deployed().then(function(instance) {
-    //   return instance.createStruct(title,client,desc,period,val);
-    //   //return instance.createSCon(array);
-    // }).catch(function(err) {
-    //   console.error(err);
-    // })
   }
 };
 
@@ -314,3 +350,12 @@ $(function() {
     App.init();
   });
 });
+
+function hex_to_ascii(str1) {
+	var hex  = str1.toString();
+	var str = '';
+	for (var n = 0; n < hex.length; n += 2) {
+		str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+	}
+	return str;
+}
