@@ -28,4 +28,4 @@
 SCREENSHOT:
 
 1. Connect to MetaMask
-<img src="ScreenShot/connectingMetaMask.jpg" />
+![alt text](ScreenShot/connectingMetaMask.jpg)
