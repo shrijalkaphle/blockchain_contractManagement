@@ -25,4 +25,7 @@
         <b>npm run dev</b>  Visit this URL in your browser: http://localhost:3000
 
 
-SCREENSHOT: 
+SCREENSHOT:
+
+1. Connect to MetaMask
+<img src="/ScreenShot/connectingMetaMask.jpg" />

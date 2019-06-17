@@ -65,8 +65,8 @@ contract SCon {
         inserting memory con;
 
         con.title = bytes32('Sample');
-        con.owner = bytes32('Shrijal Kaphle');
-        con.client = bytes32('Roshan Chapaghain');
+        con.owner = bytes32('Admin');
+        con.client = bytes32('ADmin2');
         con.endDate = bytes32('2020/1/1');
         con.contractValue = bytes32('70000');
         con.description = bytes32('This is Sample Contract');

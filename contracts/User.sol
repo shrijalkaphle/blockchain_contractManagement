@@ -13,8 +13,8 @@ contract User {
     uint public userCount;
 
     constructor() public {
-        createUser('Shrijal Kaphle','0xE3b1f7337A59015c3490A3f0358dDAF845F6B226','admin');
-        createUser('Roshan Chapaghain','0x07368489fd892De54cd865668BfDad122E7314b7','user');
+        createUser('Admin','0xE3b1f7337A59015c3490A3f0358dDAF845F6B226','admin');
+        //createUser('Roshan Chapaghain','0x07368489fd892De54cd865668BfDad122E7314b7','user');
     }
 
     function createUser(string memory name,string memory wallet,string memory role) public {
