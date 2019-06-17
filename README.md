@@ -34,13 +34,13 @@ SCREENSHOT:
 <img src="ScreenShot/index.png" />
 
 3. Creating User
-<img src="ScreenShot/createUser.png" />
+<img src="ScreenShot/userCreate.png" />
 
-3. Creating Contract
-<img src="ScreenShot/createContract.png" />
+4. Creating Contract
+<img src="ScreenShot/contractCreate.png" />
 
-4. Viewing Contract
+5. Viewing Contract
 <img src="ScreenShot/viewContract.png" />
 
-5. Viewing User
+6. Viewing User
 <img src="ScreenShot/viewUser.png" />
