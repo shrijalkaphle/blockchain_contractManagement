@@ -53,10 +53,10 @@ contract SCon {
         con.title = value[0];
         con.owner = value[1];
         con.client = value[2];
+        con.description = value[3];
         con.endDate = value[4];
-        // con.contractValue = value[5];
-        // con.description = value[3];
-        con.status = 'Pending';
+        con.contractValue = value[5];
+        con.status = bytes32('Pending');
 
         createSCon(con);
     }
@@ -65,10 +65,10 @@ contract SCon {
         inserting memory con;
 
         con.title = bytes32('Sample');
-        con.owner = bytes32('Admin');
-        con.client = bytes32('ADmin2');
+        con.owner = bytes32('Shrijal Kaphle');
+        con.client = bytes32('User121');
         con.endDate = bytes32('2020/1/1');
-        con.contractValue = bytes32('70000');
+        con.contractValue = bytes32('Rs. 70000');
         con.description = bytes32('This is Sample Contract');
         con.status = bytes32('Pending');
 

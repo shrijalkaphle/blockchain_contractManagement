@@ -13,7 +13,7 @@ contract User {
     uint public userCount;
 
     constructor() public {
-        createUser('Admin','0xE3b1f7337A59015c3490A3f0358dDAF845F6B226','admin');
+        createUser('Shrijal Kaphle','0x5b3fA103E294AA311160ff042D2c5b222be10b48','admin');
         //createUser('Roshan Chapaghain','0x07368489fd892De54cd865668BfDad122E7314b7','user');
     }
 

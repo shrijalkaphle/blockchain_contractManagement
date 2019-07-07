@@ -82,7 +82,7 @@ App = {
       if (err === null) {
         App.account = account;
         acc = account;
-
+        //alert(acc);
       }
     });
 
@@ -108,7 +108,6 @@ App = {
           var wallet = usr[2];
           var role = usr[3];
           var lcase = wallet.toLowerCase();
-          
           if(acc == lcase) {
             loader.hide();
             content.show();
@@ -299,46 +298,49 @@ App = {
   createSCon: function() {
 
     var userInstance;
-    var flag = 0;
 
     var title = $('#title').val();
     var owner = $('#owner').val();
     var client = $('#client').val();
-    var desc = $('#desc').val();
+    var desc = $('#description').val();
     var period = $('#period').val();
     var add = parseInt(period) + 1
-    var val = $('#value').val();
+    var val = $('#contractValue').val();
+    var value = "Rs. " + val;
 
     var endDate = new Date();
     var dd = String(endDate.getDate());
-    var mm = String(endDate.getMonth()+add);
+    var mm = endDate.getMonth()+add;
     var yyyy = endDate.getFullYear();
+    if(mm > 12) {
+      var yearAdd = parseInt(mm / 12);
+      mm = String(mm % 12);
+      yyyy = yyyy + yearAdd;
+
+    }
     endDate = yyyy + "/" + mm + "/" + dd;
     endDate = endDate.toString();
 
-    var array = [title,owner,client,desc,endDate,val];
+    var array = [title,owner,client,desc,endDate,value];
     //alert(endDate);
     App.contracts.User.deployed().then(function(instance) {
       userInstance = instance;
       return userInstance.userCount();
     }).then(function(userCount) {
+      var stat = 0;
       for(var i = 1;i <= userCount; i++) {
         userInstance.users(i).then(function(usr){
           var name = usr[1];
-          if(client == name) {
-            flag = 0;
+          if(client.localeCompare(name) == 0){
+            App.contracts.SCon.deployed().then(function(instance) {
+              return instance.createStruct(array);
+            }).catch(function(err) {
+              console.error(err);
+            })
           } else {
-            flag = 1;
+            stat++;
+            display(stat,userCount);
           }
-        })
-      }
-      if (flag != 0) {
-        alert('no such user');
-      } else {
-        App.contracts.SCon.deployed().then(function(instance) {
-         // return instance.createStruct(array);
-        }).catch(function(err) {
-          console.error(err);
         })
       }
     })
@@ -358,4 +360,10 @@ function hex_to_ascii(str1) {
 		str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
 	}
 	return str;
+}
+
+function display(stat,ucount) {
+  if (stat == ucount) {
+    alert("No User With that Name !");
+  }
 }
